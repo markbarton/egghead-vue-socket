@@ -1,45 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+    <title>Egghead Socket.io</title>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
         socket.on('PULSE', function (msg) {
             console.log(msg);
         })
-
-        function send_image() {
-            axios.get('/send_image');
-        }
-
-        function send_message() {
-            axios.post('/notification', {
-                message: document.getElementById('message').value,
-                color: document.querySelector('input[name="color"]:checked').value
-            })
-        }
     </script>
+
 </head>
 
 <body>
-
-    <div>
-        <label>Message</label>
-        <input name="message" id="message" type="text"><br />
-        <input type="radio" name="color" value="success" checked>Success<br />
-        <input type="radio" name="color" value="info">Info<br />
-        <input type="radio" name="color" value="error">Error<br />
-
-        <button onclick="send_message(); return false">Send Message</button>
-    </div>
-
-    <button onclick="send_image(); return false">Send Image</button>
 </body>
 
 </html>
