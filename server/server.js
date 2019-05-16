@@ -10,9 +10,22 @@ const logger = require('./logger');
 const port = process.env.PORT || 8500;
 const io = require('./io').initialize(http);
 const global_socket = require('./io').io();
+const bodyParser = require('body-parser');
 
 // Static file service
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
+
+app.post('/notification',
+    function (req, res) {
+        logger.debug(`Message Recieved: ${req.body.message}`);
+        global_socket.emit('POPUP_NOTIFICATION', {
+            message: req.body.message,
+            color: req.body.color
+        })
+        res.send();
+    }
+)
 
 // Start the express server
 http.listen(port);
@@ -28,6 +41,6 @@ setInterval(function () {
 function heartbeat() {
     // Retun a random number between 60 (inc) and max (exc)
     const pulse = Math.ceil(Math.random() * (160 - 60) + 60);
-    logger.debug(`Heartbeat ${pulse}`);
+    //logger.debug(`Heartbeat ${pulse}`);
     return pulse;
 }
