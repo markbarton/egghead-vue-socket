@@ -15,7 +15,7 @@ exports.initialize = function (server) {
     socket.on('disconnect', function () {
       // Updated to get real username
       const user_data = ids.get(socket.id);
-      if(user_data){
+      if (user_data) {
         logger.debug('USER DISCONNECTED ' + user_data.name)
       }
     })
@@ -32,6 +32,20 @@ exports.initialize = function (server) {
 
       // Also join a room / group - inbuilt socket functionality
       socket.join(data.group);
+    });
+
+    // Send from the ComposeMessage Vue component
+    socket.on('SEND_MESSAGE', function (data) {
+      // If we have a name then its to a person else group
+      let recipient = '';
+      if (data.name) {
+        const user = users.get(data.name);
+        recipient = user.socket_id;
+      } else {
+        recipient = data.group;
+      }
+      logger.debug(`POPUP_NOTIFICATION triggered for ${recipient}`)
+      io.to(recipient).emit('POPUP_NOTIFICATION', data);
     });
 
   })
