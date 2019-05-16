@@ -12,6 +12,14 @@ exports.initialize = function (server) {
   io.on('connection', (socket) => {
     logger.debug(`A user connected with ${socket.id}`);
 
+    socket.on('disconnect', function () {
+      // Updated to get real username
+      const user_data = ids.get(socket.id);
+      if (user_data) {
+        logger.debug('USER DISCONNECTED ' + user_data.name)
+      }
+    })
+
     // Sent from the UserProfile Vue Component
     socket.on('UPDATE_USER', function (data) {
       logger.debug(`UPDATE_USER triggered for ${data.name}`)
