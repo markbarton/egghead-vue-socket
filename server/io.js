@@ -2,6 +2,8 @@ const sio = require('socket.io');
 const logger = require('./logger');
 
 let io = null;
+const users = new Map();
+const ids = new Map();
 
 exports.io = function () {
   return io;
